@@ -1,27 +1,24 @@
 package com.swervedrivespecialties.swervelib;
 
-// import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+//import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
 public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
     private final ModuleConfiguration moduleConfiguration;
     private final DriveControllerFactory<?, DriveConfiguration> driveControllerFactory;
     private final SteerControllerFactory<?, SteerConfiguration> steerControllerFactory;
-    private final String canBusName;
 
     public SwerveModuleFactory(ModuleConfiguration moduleConfiguration,
                                DriveControllerFactory<?, DriveConfiguration> driveControllerFactory,
-                               SteerControllerFactory<?, SteerConfiguration> steerControllerFactory,
-                               String canBusName) {
+                               SteerControllerFactory<?, SteerConfiguration> steerControllerFactory) {
         this.moduleConfiguration = moduleConfiguration;
         this.driveControllerFactory = driveControllerFactory;
         this.steerControllerFactory = steerControllerFactory;
-        this.canBusName = canBusName;
     }
 
     public SwerveModule create(DriveConfiguration driveConfiguration, SteerConfiguration steerConfiguration) {
-        var driveController = driveControllerFactory.create(driveConfiguration, moduleConfiguration, canBusName);
-        var steerController = steerControllerFactory.create(steerConfiguration, moduleConfiguration, canBusName);
+        var driveController = driveControllerFactory.create(driveConfiguration, moduleConfiguration);
+        var steerController = steerControllerFactory.create(steerConfiguration, moduleConfiguration);
 
         return new ModuleImplementation(driveController, steerController);
     }
@@ -30,14 +27,12 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
         var driveController = driveControllerFactory.create(
                 container,
                 driveConfiguration,
-                moduleConfiguration,
-                canBusName
+                moduleConfiguration
         );
         var steerContainer = steerControllerFactory.create(
                 container,
                 steerConfiguration,
-                moduleConfiguration,
-                canBusName
+                moduleConfiguration
         );
 
         return new ModuleImplementation(driveController, steerContainer);
