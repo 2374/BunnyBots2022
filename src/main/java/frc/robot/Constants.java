@@ -137,4 +137,6 @@ public final class Constants {
 
     public static final String DRIVER_READOUT_TAB_NAME = "Driver Readout";
 
+    public static final double ARM_LIMIT = 0;
+
 }

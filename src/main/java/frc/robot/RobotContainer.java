@@ -10,9 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.buttonCommands.GyroResetCommand;
-import frc.robot.commands.buttonCommands.RaiseArmCommand;
-import frc.robot.commands.buttonCommands.TurboModeToggleCommand;
+import frc.robot.commands.buttonCommands.*;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 /**
@@ -83,6 +81,8 @@ public class RobotContainer {
         // Arm
         new JoystickButton(m_controller, Constants.CONTROLLER_A_BUTTON_ID)
                 .whenHeld(new RaiseArmCommand(m_armSubsystem));
+        new JoystickButton(m_controller, Constants.CONTROLLER_Y_BUTTON_ID)
+                .whenHeld(new LowerArmCommand(m_armSubsystem));
 
     }
 
