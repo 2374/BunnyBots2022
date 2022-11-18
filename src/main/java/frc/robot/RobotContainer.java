@@ -81,7 +81,8 @@ public class RobotContainer {
                 .whenPressed(new TurboModeToggleCommand(m_drivetrainSubsystem));
 
         // Arm
-        new JoystickButton(m_controller, Constants.CONTROLLER_A_BUTTON_ID).whenHeld(new RaiseArmCommand(m_armSubsystem));
+        new JoystickButton(m_controller, Constants.CONTROLLER_A_BUTTON_ID)
+                .whenHeld(new RaiseArmCommand(m_armSubsystem));
 
     }
 
