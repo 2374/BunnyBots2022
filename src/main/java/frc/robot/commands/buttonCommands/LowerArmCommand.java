@@ -18,7 +18,7 @@ public class LowerArmCommand extends CommandBase {
 
     public void execute() {
         if (m_armSubsystem.getArmPosition() <= Constants.ARM_LIMIT) {
-            end();
+            cancel();
         }
     }
 
