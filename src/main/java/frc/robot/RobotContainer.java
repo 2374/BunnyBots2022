@@ -1,142 +1,158 @@
-// Jacob was here (Hello there, General Kenobi!)
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.buttonCommands.*;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystem;
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
+// import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+// import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import frc.robot.util.AutonomousChooser;
 import frc.robot.util.AutonomousTrajectories;
+// import frc.robot.util.ClimbChooser;
 
 public class RobotContainer {
-    // The robot's subsystems are defined here...
-    private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-    // private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+    private final Superstructure superstructure = new Superstructure();
 
-    private static XboxController m_controller = new XboxController(Constants.XBOX_CONTROLLER_PORT);
-    // private static XboxController m_ord = new
-    // XboxController(Constants.XBOX_2_CONTROLLER_PORT); //at the speed of gene
+    // private final ClimberSubsystem climber = new ClimberSubsystem();
+    // private final ShooterSubsystem shooter = new ShooterSubsystem();
+    // private final IntakeSubsystem intake = new IntakeSubsystem();
+    // private final FeederSubsystem feeder = new FeederSubsystem();
+    private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+    // private final VisionSubsystem vision = new VisionSubsystem(drivetrain);
 
-    private AutonomousTrajectories autonomousTrajectories;
-    private final AutonomousChooser autonomousChooser;
+    private final AutonomousChooser autonomousChooser = new AutonomousChooser(
+            new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS));
+    // private final ClimbChooser climbChooser = new ClimbChooser();
 
-    private final SlewRateLimiter xLimiter = new SlewRateLimiter(.5);
-    private final SlewRateLimiter yLimiter = new SlewRateLimiter(.5);
+    private final XboxController controller = new XboxController(Constants.CONTROLLER_PORT);
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
     public RobotContainer() {
+        // CommandScheduler.getInstance().registerSubsystem(climber);
+        // CommandScheduler.getInstance().registerSubsystem(shooter);
+        // CommandScheduler.getInstance().registerSubsystem(intake);
+        // CommandScheduler.getInstance().registerSubsystem(feeder);
+        CommandScheduler.getInstance().registerSubsystem(drivetrain);
+        // CommandScheduler.getInstance().registerSubsystem(vision);
 
-        autonomousTrajectories = new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS);
-        autonomousChooser = new AutonomousChooser(autonomousTrajectories);
+        // shooter.setDefaultCommand(new DefaultShooterCommand(shooter));
+        // intake.setDefaultCommand(new DefaultIntakeCommand(intake));
+        // feeder.setDefaultCommand(new DefaultFeederCommand(feeder));
+        drivetrain.setDefaultCommand(new DefaultDriveCommand(drivetrain, this::getForwardInput, this::getStrafeInput,
+                this::getRotationInput));
 
-        CommandScheduler.getInstance().registerSubsystem(m_drivetrainSubsystem);
-
-        // Set up the default command for the drivetrain.
-        // The controls are for field-oriented driving:
-        // Left stick Y axis -> forward and backwards movement
-        // Left stick X axis -> left and right movement
-        // Right stick X axis -> rotation
-        m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-                m_drivetrainSubsystem,
-                () -> -yLimiter.calculate(modifyAxis(m_controller.getLeftY()))
-                        * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                () -> -xLimiter.calculate(modifyAxis(m_controller.getLeftX()))
-                        * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-                () -> -m_controller.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND / 4.0));
-
-        // Configure the button bindings
         configureButtonBindings();
-        System.out.println("BUTTONS CONFIGURED");
     }
 
-    /**
-     * Use this method to define your button->command mappings. Buttons can be
-     * created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-     * it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-
-        // Drive
-        new JoystickButton(m_controller, Constants.CONTROLLER_BACK_BUTTON_ID)
-                .whenPressed(new GyroResetCommand(m_drivetrainSubsystem));
-        new JoystickButton(m_controller, Constants.CONTROLLER_LEFT_BUMPER_ID)
-                .whenPressed(new TurboModeToggleCommand(m_drivetrainSubsystem));
-
-        // Arm
-        // new JoystickButton(m_controller, Constants.CONTROLLER_A_BUTTON_ID)
-        // .whenHeld(new RaiseArmCommand(m_armSubsystem));
-        // new JoystickButton(m_controller, Constants.CONTROLLER_Y_BUTTON_ID)
-        // .whenHeld(new LowerArmCommand(m_armSubsystem));
-
+    public DrivetrainSubsystem getDrivetrain() {
+        return drivetrain;
     }
 
-    public void executeAutoCommands() {
+    // public ShooterSubsystem getShooter() {
+    //     return shooter;
+    // }
 
+    // public IntakeSubsystem getIntake() {
+    //     return intake;
+    // }
+
+    // public ClimberSubsystem getClimber() {
+    //     return climber;
+    // }
+
+    // public FeederSubsystem getFeeder() {
+    //     return feeder;
+    // }
+
+    // public VisionSubsystem getVision() {
+    //     return vision;
+    // }
+
+    public XboxController getController() {
+        return controller;
     }
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        return autonomousChooser.getCommand(this);
+    public void configureButtonBindings() {
+        // new Button(controller::getRightBumper).whileHeld(new TargetWithShooterCommand(shooter, vision)
+        //         .alongWith(
+        //                 new AlignRobotToShootCommand(drivetrain, vision, this::getForwardInput, this::getStrafeInput))
+        //         .alongWith(new WaitCommand(0.1).andThen(new ShootWhenReadyCommand(feeder, shooter, vision))));
+        // new Button(controller::getLeftBumper).whileHeld(new SimpleIntakeCommand(intake, feeder, controller));
+
+        // new Button(() -> controller.getRightTriggerAxis() > 0.5).whileHeld(new FenderShootCommand(feeder, shooter));
+        // new Button(() -> controller.getLeftTriggerAxis() > 0.5).whenPressed(new ResetFeederCommand(feeder, intake));
+
+        // new Button(controller::getYButton).whenPressed(new ZeroClimberCommand(climber));
+        // new Button(controller::getXButton).whenPressed(new ZeroHoodCommand(shooter, true));
+        // new Button(controller::getAButton).whileHeld(new ManualFeedToShooterCommand(feeder));
+
+        // new Button(() -> controller.getPOV() == 0).whenPressed(new ConditionalCommand(
+        //         new ClimberToPointCommand(climber, ClimberSubsystem.MID_RUNG_HEIGHT, false, true),
+        //         new ClimberToPointCommand(climber, ClimberSubsystem.MAX_HEIGHT, false, true), () -> climber
+        //                 .getCurrentHeight() > (ClimberSubsystem.MAX_HEIGHT + ClimberSubsystem.MID_RUNG_HEIGHT) / 2.0));
+        // new Button(() -> controller.getPOV() == 180)
+        //         .whenPressed(new ClimberToPointCommand(climber, ClimberSubsystem.MIN_HEIGHT, false, true));
+
+        new Button(controller::getBackButton).whenPressed(drivetrain::zeroRotation);
+        // new Button(controller::getStartButton).whenPressed(
+        //         new AutoClimbCommand(climber, shooter, () -> climbChooser.getClimbChooser().getSelected()));
+
+        // // manual hood adjustment - 0: up, 180: down
+        // new Button(() -> controller.getPOV() == 180.0).whenPressed(() ->
+        // shooter.setHoodTargetPosition(
+        // shooter.getHoodTargetPosition() - Constants.HOOD_MANUAL_ADJUST_INTERVAL)
+        // );
+        //
+        // new Button(() -> controller.getPOV() == 0.0).whenPressed(() ->
+        // shooter.setHoodTargetPosition(
+        // shooter.getHoodTargetPosition() + Constants.HOOD_MANUAL_ADJUST_INTERVAL)
+        // );
+        //
+        // //manual flywheel adjustment - 90: right, 270: left
+        // new Button(() -> controller.getPOV() == 90.0).whenPressed(() ->
+        // shooter.setTargetFlywheelSpeed(
+        // shooter.getTargetFlywheelSpeed() + Constants.FLYWHEEL_MANUAL_ADJUST_INTERVAL)
+        // );
+        //
+        // new Button(() -> controller.getPOV() == 270.0).whenPressed(() ->
+        // shooter.setTargetFlywheelSpeed(
+        // shooter.getTargetFlywheelSpeed() - Constants.FLYWHEEL_MANUAL_ADJUST_INTERVAL)
+        // );
     }
 
-    private static double deadband(double value, double deadband) {
-        if (Math.abs(value) > deadband) {
-            if (value > 0.0) {
-                return (value - deadband) / (1.0 - deadband);
-            } else {
-                return (value + deadband) / (1.0 - deadband);
-            }
-        } else {
+    private static double deadband(double value, double tolerance) {
+        if (Math.abs(value) < tolerance)
             return 0.0;
-        }
+
+        return Math.copySign(value, (value - tolerance) / (1.0 - tolerance));
     }
 
-    private double modifyAxis(double value) {
-        // Deadband
-        value = deadband(value, 0.1);
-
-        // Square the axis
-        value = Math.copySign(value * value, value);
-
-        // TURBO MODE!
-        if (m_drivetrainSubsystem.getTurboMode() && m_drivetrainSubsystem != null) {
-            return value * 0.2;
-        } else {
-            return 0.1 * value;
-        }
+    private static double square(double value) {
+        return Math.copySign(value * value, value);
     }
 
-    public DrivetrainSubsystem getDrivetrainSubsystem() {
-        return m_drivetrainSubsystem;
+    private double getForwardInput() {
+        return -square(deadband(controller.getLeftY(), 0.1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+    }
+
+    private double getStrafeInput() {
+        return -square(deadband(controller.getLeftX(), 0.1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+    }
+
+    private double getRotationInput() {
+        return -square(deadband(controller.getRightX(), 0.1))
+                * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
     }
 
     public AutonomousChooser getAutonomousChooser() {
         return autonomousChooser;
     }
 
+    // public ClimbChooser getClimbChooser() {
+    //     return climbChooser;
+    // }
+
+    public Superstructure getSuperstructure() {
+        return superstructure;
+    }
 }

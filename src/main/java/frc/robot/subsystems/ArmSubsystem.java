@@ -13,7 +13,7 @@ public class ArmSubsystem extends SubsystemBase {
     private ArmSubsystem instance;
 
     public ArmSubsystem() {
-        armMotor = new WPI_TalonFX(Constants.ARM_MOTOR, Constants.CANIVORE_CAN_BUS_NAME);
+        armMotor = new WPI_TalonFX(Constants.ARM_MOTOR_PORT, Constants.CANIVORE_CAN_BUS_NAME);
         armMotor.setNeutralMode(NeutralMode.Brake);
         armMotor.setSelectedSensorPosition(0);
     }

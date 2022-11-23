@@ -1,60 +1,56 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the
- * name of this class or
- * the package after creating this project, you must also update the
- * build.gradle file in the
- * project.
- */
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+// import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.CharacterizeDrivetrainCommand;
+// import frc.robot.commands.ZeroClimberCommand;
+// import frc.robot.commands.ZeroHoodCommand;
+import frc.robot.util.DriverReadout;
 
 public class Robot extends TimedRobot {
-    @Override
-    public void robotInit() {
-        new RobotContainer();
-    }
+    private final RobotContainer robotContainer = new RobotContainer();
+
+    @SuppressWarnings("unused")
+    private final CharacterizeDrivetrainCommand characterizeCommand = new CharacterizeDrivetrainCommand(
+            robotContainer.getDrivetrain());
+
+    @SuppressWarnings("unused")
+    private final DriverReadout driverReadout = new DriverReadout(robotContainer);
 
     @Override
     public void robotPeriodic() {
-    }
-
-    @Override
-    public void autonomousInit() {
-    }
-
-    @Override
-    public void autonomousPeriodic() {
-    }
-
-    @Override
-    public void teleopInit() {
-    }
-
-    @Override
-    public void teleopPeriodic() {
+        CommandScheduler.getInstance().run();
     }
 
     @Override
     public void disabledInit() {
+        // robotContainer.getShooter().setHoodBrakeMode(false);
     }
 
     @Override
-    public void disabledPeriodic() {
+    public void disabledExit() {
+        // robotContainer.getShooter().setHoodBrakeMode(false);
+    }
+
+    @Override
+    public void teleopInit() {
+        // if (!robotContainer.getClimber().isClimberZeroed()) {
+        //     new ZeroClimberCommand(robotContainer.getClimber()).schedule();
+        // }
+        // if (!robotContainer.getShooter().isHoodZeroed()) {
+        //     new ZeroHoodCommand(robotContainer.getShooter(), true).schedule();
+        // }
     }
 
     @Override
     public void testInit() {
+        // new InstantCommand(robotContainer.getShooter()::disableFlywheel);
     }
 
     @Override
-    public void testPeriodic() {
+    public void autonomousInit() {
+        robotContainer.getAutonomousChooser().getCommand(robotContainer).schedule();
+        // characterizeCommand.schedule();
     }
 }

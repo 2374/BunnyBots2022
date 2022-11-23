@@ -6,7 +6,7 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import com.swervedrivespecialties.swervelib.Mk3ModuleConfiguration;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 // import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
-// import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
+// import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 import edu.wpi.first.math.VecBuilder;
@@ -37,17 +37,14 @@ import frc.common.util.HolonomicFeedforward;
 import static frc.robot.Constants.*;
 
 public class DrivetrainSubsystem extends SubsystemBase {
-    public static boolean turboMode = false;
     public static final double MAX_VOLTAGE = 12.0;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0
-            * SdsModuleConfigurations.MK4_L3.getDriveReduction()
-            * SdsModuleConfigurations.MK4_L3.getWheelDiameter()
+            * SdsModuleConfigurations.MK4_L3.getDriveReduction() * SdsModuleConfigurations.MK4_L3.getWheelDiameter()
             * Math.PI;
     public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND
             / Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
-    public static final DrivetrainFeedforwardConstants FEEDFORWARD_CONSTANTS = new DrivetrainFeedforwardConstants(
-            0.891,
+    public static final DrivetrainFeedforwardConstants FEEDFORWARD_CONSTANTS = new DrivetrainFeedforwardConstants(0.891,
             0.15, 0.13592);
 
     public static final double DRIVETRAIN_CURRENT_LIMIT = 50.0;
@@ -93,75 +90,57 @@ public class DrivetrainSubsystem extends SubsystemBase {
         Mk3ModuleConfiguration mk3ModuleConfiguration = new Mk3ModuleConfiguration();
         mk3ModuleConfiguration.setDriveCurrentLimit(DRIVETRAIN_CURRENT_LIMIT);
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-        // frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
+        // frontLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
         // tab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2,
-        // 4).withPosition(0,
-        // 0),
-        // mk4ModuleConfiguration, Mk4SwerveModuleHelper.GearRatio.L3,
+        // 4).withPosition(0, 0),
+        // mk4ModuleConfiguration, Mk4iSwerveModuleHelper.GearRatio.L3,
         // FRONT_LEFT_MODULE_DRIVE_MOTOR,
         // FRONT_LEFT_MODULE_STEER_MOTOR, FRONT_LEFT_MODULE_STEER_ENCODER,
         // FRONT_LEFT_MODULE_STEER_OFFSET);
-        // frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
+        // frontRightModule = Mk4iSwerveModuleHelper.createFalcon500(
         // tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2,
-        // 4).withPosition(2,
-        // 0),
-        // mk4ModuleConfiguration, Mk4SwerveModuleHelper.GearRatio.L3,
+        // 4).withPosition(2, 0),
+        // mk4ModuleConfiguration, Mk4iSwerveModuleHelper.GearRatio.L3,
         // FRONT_RIGHT_MODULE_DRIVE_MOTOR,
         // FRONT_RIGHT_MODULE_STEER_MOTOR, FRONT_RIGHT_MODULE_STEER_ENCODER,
         // FRONT_RIGHT_MODULE_STEER_OFFSET);
-        // backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
+        // backLeftModule = Mk4iSwerveModuleHelper.createFalcon500(
         // tab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2,
-        // 4).withPosition(4,
-        // 0),
-        // mk4ModuleConfiguration, Mk4SwerveModuleHelper.GearRatio.L3,
+        // 4).withPosition(4, 0),
+        // mk4ModuleConfiguration, Mk4iSwerveModuleHelper.GearRatio.L3,
         // BACK_LEFT_MODULE_DRIVE_MOTOR,
         // BACK_LEFT_MODULE_STEER_MOTOR, BACK_LEFT_MODULE_STEER_ENCODER,
         // BACK_LEFT_MODULE_STEER_OFFSET);
-        // backRightModule = Mk4SwerveModuleHelper.createFalcon500(
+        // backRightModule = Mk4iSwerveModuleHelper.createFalcon500(
         // tab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2,
-        // 4).withPosition(6,
-        // 0),
-        // mk4ModuleConfiguration, Mk4SwerveModuleHelper.GearRatio.L3,
+        // 4).withPosition(6, 0),
+        // mk4ModuleConfiguration, Mk4iSwerveModuleHelper.GearRatio.L3,
         // BACK_RIGHT_MODULE_DRIVE_MOTOR,
         // BACK_RIGHT_MODULE_STEER_MOTOR, BACK_RIGHT_MODULE_STEER_ENCODER,
         // BACK_RIGHT_MODULE_STEER_OFFSET);
         frontLeftModule = Mk3SwerveModuleHelper.createFalcon500(
-                tab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2,
-                        4).withPosition(0, 0),
-                mk3ModuleConfiguration, Mk3SwerveModuleHelper.GearRatio.FAST,
-                FRONT_LEFT_MODULE_DRIVE_MOTOR,
-                FRONT_LEFT_MODULE_STEER_MOTOR, FRONT_LEFT_MODULE_STEER_ENCODER,
-                FRONT_LEFT_MODULE_STEER_OFFSET);
+                tab.getLayout("Front Left Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0),
+                mk3ModuleConfiguration, Mk3SwerveModuleHelper.GearRatio.FAST, FRONT_LEFT_MODULE_DRIVE_MOTOR,
+                FRONT_LEFT_MODULE_STEER_MOTOR, FRONT_LEFT_MODULE_STEER_ENCODER, FRONT_LEFT_MODULE_STEER_OFFSET);
         frontRightModule = Mk3SwerveModuleHelper.createFalcon500(
-                tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2,
-                        4).withPosition(2, 0),
-                mk3ModuleConfiguration, Mk3SwerveModuleHelper.GearRatio.FAST,
-                FRONT_RIGHT_MODULE_DRIVE_MOTOR,
-                FRONT_RIGHT_MODULE_STEER_MOTOR, FRONT_RIGHT_MODULE_STEER_ENCODER,
-                FRONT_RIGHT_MODULE_STEER_OFFSET);
+                tab.getLayout("Front Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 0),
+                mk3ModuleConfiguration, Mk3SwerveModuleHelper.GearRatio.FAST, FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+                FRONT_RIGHT_MODULE_STEER_MOTOR, FRONT_RIGHT_MODULE_STEER_ENCODER, FRONT_RIGHT_MODULE_STEER_OFFSET);
         backLeftModule = Mk3SwerveModuleHelper.createFalcon500(
-                tab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2,
-                        4).withPosition(4, 0),
-                mk3ModuleConfiguration, Mk3SwerveModuleHelper.GearRatio.FAST,
-                BACK_LEFT_MODULE_DRIVE_MOTOR,
-                BACK_LEFT_MODULE_STEER_MOTOR, BACK_LEFT_MODULE_STEER_ENCODER,
-                BACK_LEFT_MODULE_STEER_OFFSET);
+                tab.getLayout("Back Left Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(4, 0),
+                mk3ModuleConfiguration, Mk3SwerveModuleHelper.GearRatio.FAST, BACK_LEFT_MODULE_DRIVE_MOTOR,
+                BACK_LEFT_MODULE_STEER_MOTOR, BACK_LEFT_MODULE_STEER_ENCODER, BACK_LEFT_MODULE_STEER_OFFSET);
         backRightModule = Mk3SwerveModuleHelper.createFalcon500(
-                tab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2,
-                        4).withPosition(6, 0),
-                mk3ModuleConfiguration, Mk3SwerveModuleHelper.GearRatio.FAST,
-                BACK_RIGHT_MODULE_DRIVE_MOTOR,
-                BACK_RIGHT_MODULE_STEER_MOTOR, BACK_RIGHT_MODULE_STEER_ENCODER,
-                BACK_RIGHT_MODULE_STEER_OFFSET);
+                tab.getLayout("Back Right Module", BuiltInLayouts.kList).withSize(2, 4).withPosition(6, 0),
+                mk3ModuleConfiguration, Mk3SwerveModuleHelper.GearRatio.FAST, BACK_RIGHT_MODULE_DRIVE_MOTOR,
+                BACK_RIGHT_MODULE_STEER_MOTOR, BACK_RIGHT_MODULE_STEER_ENCODER, BACK_RIGHT_MODULE_STEER_OFFSET);
 
         estimator = new SwerveDrivePoseEstimator(getGyroscopeRotation(), new Pose2d(), kinematics,
                 VecBuilder.fill(0.02, 0.02, 0.01), // estimator values (x, y, rotation) std-devs
                 VecBuilder.fill(0.01), // Gyroscope rotation std-dev
                 VecBuilder.fill(0.1, 0.1, 0.01)); // Vision (x, y, rotation) std-devs
-        motorOutputPercentageLimiterEntry = tab.add("Motor Percentage", 100.0)
-                .withWidget(BuiltInWidgets.kNumberSlider)
-                .withProperties(Map.of("min", 0.0, "max", 100.0, "Block increment", 10.0))
-                .withPosition(0, 3)
+        motorOutputPercentageLimiterEntry = tab.add("Motor Percentage", 100.0).withWidget(BuiltInWidgets.kNumberSlider)
+                .withProperties(Map.of("min", 0.0, "max", 100.0, "Block increment", 10.0)).withPosition(0, 3)
                 .getEntry();
 
         tab.addNumber("Odometry X", () -> Units.metersToFeet(getPose().getX()));
@@ -233,16 +212,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        SwerveModuleState currentFrontLeftModuleState = new SwerveModuleState(
-                frontLeftModule.getDriveVelocity(),
+        SwerveModuleState currentFrontLeftModuleState = new SwerveModuleState(frontLeftModule.getDriveVelocity(),
                 new Rotation2d(frontLeftModule.getSteerAngle()));
-        SwerveModuleState currentFrontRightModuleState = new SwerveModuleState(
-                frontRightModule.getDriveVelocity(),
+        SwerveModuleState currentFrontRightModuleState = new SwerveModuleState(frontRightModule.getDriveVelocity(),
                 new Rotation2d(frontRightModule.getSteerAngle()));
         SwerveModuleState currentBackLeftModuleState = new SwerveModuleState(backLeftModule.getDriveVelocity(),
                 new Rotation2d(backLeftModule.getSteerAngle()));
-        SwerveModuleState currentBackRightModuleState = new SwerveModuleState(
-                backRightModule.getDriveVelocity(),
+        SwerveModuleState currentBackRightModuleState = new SwerveModuleState(backRightModule.getDriveVelocity(),
                 new Rotation2d(backRightModule.getSteerAngle()));
 
         currentVelocity = kinematics.toChassisSpeeds(currentFrontLeftModuleState, currentFrontRightModuleState,
@@ -259,11 +235,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
             HolonomicDriveSignal driveSignal = driveSignalOpt.get();
             if (driveSignalOpt.get().isFieldOriented()) {
                 chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(driveSignal.getTranslation().x,
-                        driveSignal.getTranslation().y, driveSignal.getRotation(),
-                        getPose().getRotation());
+                        driveSignal.getTranslation().y, driveSignal.getRotation(), getPose().getRotation());
             } else {
-                chassisSpeeds = new ChassisSpeeds(driveSignal.getTranslation().x,
-                        driveSignal.getTranslation().y,
+                chassisSpeeds = new ChassisSpeeds(driveSignal.getTranslation().x, driveSignal.getTranslation().y,
                         driveSignal.getRotation());
             }
         }
@@ -280,13 +254,5 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 states[2].angle.getRadians());
         backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
                 states[3].angle.getRadians());
-    }
-
-    public boolean getTurboMode() {
-        return turboMode;
-    }
-
-    public void toggleTurboMode() {
-        turboMode = !turboMode;
     }
 }

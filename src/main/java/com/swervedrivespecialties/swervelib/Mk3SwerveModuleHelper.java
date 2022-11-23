@@ -17,8 +17,7 @@ public final class Mk3SwerveModuleHelper {
                 .build();
     }
 
-    private static SteerControllerFactory<?, Falcon500SteerConfiguration<CanCoderAbsoluteConfiguration>> getFalcon500SteerFactory(
-            Mk3ModuleConfiguration configuration) {
+    private static SteerControllerFactory<?, Falcon500SteerConfiguration<CanCoderAbsoluteConfiguration>> getFalcon500SteerFactory(Mk3ModuleConfiguration configuration) {
         return new Falcon500SteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(0.2, 0.0, 0.1)
@@ -35,8 +34,7 @@ public final class Mk3SwerveModuleHelper {
                 .build();
     }
 
-    private static SteerControllerFactory<?, NeoSteerConfiguration<CanCoderAbsoluteConfiguration>> getNeoSteerFactory(
-            Mk3ModuleConfiguration configuration) {
+    private static SteerControllerFactory<?, NeoSteerConfiguration<CanCoderAbsoluteConfiguration>> getNeoSteerFactory(Mk3ModuleConfiguration configuration) {
         return new NeoSteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(1.0, 0.0, 0.1)
@@ -66,17 +64,20 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        System.out.println("SWERVE MODULE: " + driveMotorPort);
+            double steerOffset
+    ) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getFalcon500DriveFactory(configuration),
-                getFalcon500SteerFactory(configuration)).create(
-                        container,
-                        driveMotorPort,
-                        new Falcon500SteerConfiguration<>(
-                                steerMotorPort,
-                                new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)));
+                getFalcon500SteerFactory(configuration)
+        ).create(
+                container,
+                driveMotorPort,
+                new Falcon500SteerConfiguration<>(
+                        steerMotorPort,
+                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                )
+        );
     }
 
     /**
@@ -97,9 +98,9 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        return createFalcon500(container, new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
-                steerEncoderPort, steerOffset);
+            double steerOffset
+    ) {
+        return createFalcon500(container, new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset);
     }
 
     /**
@@ -119,15 +120,19 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
+            double steerOffset
+    ) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getFalcon500DriveFactory(configuration),
-                getFalcon500SteerFactory(configuration)).create(
-                        driveMotorPort,
-                        new Falcon500SteerConfiguration<>(
-                                steerMotorPort,
-                                new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)));
+                getFalcon500SteerFactory(configuration)
+        ).create(
+                driveMotorPort,
+                new Falcon500SteerConfiguration<>(
+                        steerMotorPort,
+                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                )
+        );
     }
 
     /**
@@ -145,9 +150,9 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        return createFalcon500(new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
-                steerEncoderPort, steerOffset);
+            double steerOffset
+    ) {
+        return createFalcon500(new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset);
     }
 
     /**
@@ -170,16 +175,20 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
+            double steerOffset
+    ) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getNeoDriveFactory(configuration),
-                getNeoSteerFactory(configuration)).create(
-                        container,
-                        driveMotorPort,
-                        new NeoSteerConfiguration<>(
-                                steerMotorPort,
-                                new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)));
+                getNeoSteerFactory(configuration)
+        ).create(
+                container,
+                driveMotorPort,
+                new NeoSteerConfiguration<>(
+                        steerMotorPort,
+                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                )
+        );
     }
 
     /**
@@ -200,9 +209,9 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        return createNeo(container, new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
-                steerEncoderPort, steerOffset);
+            double steerOffset
+    ) {
+        return createNeo(container, new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset);
     }
 
     /**
@@ -222,15 +231,19 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
+            double steerOffset
+    ) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getNeoDriveFactory(configuration),
-                getNeoSteerFactory(configuration)).create(
-                        driveMotorPort,
-                        new NeoSteerConfiguration<>(
-                                steerMotorPort,
-                                new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)));
+                getNeoSteerFactory(configuration)
+        ).create(
+                driveMotorPort,
+                new NeoSteerConfiguration<>(
+                        steerMotorPort,
+                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                )
+        );
     }
 
     /**
@@ -248,14 +261,13 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        return createNeo(new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort,
-                steerOffset);
+            double steerOffset
+    ) {
+        return createNeo(new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset);
     }
 
     /**
-     * Creates a Mk3 swerve module that uses a Falcon 500 for driving and a NEO for
-     * steering.
+     * Creates a Mk3 swerve module that uses a Falcon 500 for driving and a NEO for steering.
      * Module information is displayed in the specified ShuffleBoard container.
      *
      * @param container        The container to display module information in.
@@ -274,21 +286,24 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
+            double steerOffset
+    ) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getFalcon500DriveFactory(configuration),
-                getNeoSteerFactory(configuration)).create(
-                        container,
-                        driveMotorPort,
-                        new NeoSteerConfiguration<>(
-                                steerMotorPort,
-                                new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)));
+                getNeoSteerFactory(configuration)
+        ).create(
+                container,
+                driveMotorPort,
+                new NeoSteerConfiguration<>(
+                        steerMotorPort,
+                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                )
+        );
     }
 
     /**
-     * Creates a Mk3 swerve module that uses a Falcon 500 for driving and a NEO for
-     * steering.
+     * Creates a Mk3 swerve module that uses a Falcon 500 for driving and a NEO for steering.
      * Module information is displayed in the specified ShuffleBoard container.
      *
      * @param container        The container to display module information in.
@@ -305,14 +320,13 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        return createFalcon500Neo(container, new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
-                steerEncoderPort, steerOffset);
+            double steerOffset
+    ) {
+        return createFalcon500Neo(container, new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset);
     }
 
     /**
-     * Creates a Mk3 swerve module that uses a Falcon 500 for driving and a NEO for
-     * steering.
+     * Creates a Mk3 swerve module that uses a Falcon 500 for driving and a NEO for steering.
      *
      * @param configuration    Module configuration parameters to use.
      * @param gearRatio        The gearing configuration the module is in.
@@ -328,20 +342,23 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
+            double steerOffset
+    ) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getFalcon500DriveFactory(configuration),
-                getNeoSteerFactory(configuration)).create(
-                        driveMotorPort,
-                        new NeoSteerConfiguration<>(
-                                steerMotorPort,
-                                new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)));
+                getNeoSteerFactory(configuration)
+        ).create(
+                driveMotorPort,
+                new NeoSteerConfiguration<>(
+                        steerMotorPort,
+                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                )
+        );
     }
 
     /**
-     * Creates a Mk3 swerve module that uses a Falcon 500 for driving and a NEO for
-     * steering.
+     * Creates a Mk3 swerve module that uses a Falcon 500 for driving and a NEO for steering.
      *
      * @param gearRatio        The gearing configuration the module is in.
      * @param driveMotorPort   The CAN ID of the drive Falcon 500.
@@ -355,14 +372,13 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        return createFalcon500Neo(new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
-                steerEncoderPort, steerOffset);
+            double steerOffset
+    ) {
+        return createFalcon500Neo(new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset);
     }
 
     /**
-     * Creates a Mk3 swerve module that uses a NEO for driving and a Falcon 500 for
-     * steering.
+     * Creates a Mk3 swerve module that uses a NEO for driving and a Falcon 500 for steering.
      * Module information is displayed in the specified ShuffleBoard container.
      *
      * @param container        The container to display module information in.
@@ -381,21 +397,24 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
+            double steerOffset
+    ) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getNeoDriveFactory(configuration),
-                getFalcon500SteerFactory(configuration)).create(
-                        container,
-                        driveMotorPort,
-                        new Falcon500SteerConfiguration<>(
-                                steerMotorPort,
-                                new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)));
+                getFalcon500SteerFactory(configuration)
+        ).create(
+                container,
+                driveMotorPort,
+                new Falcon500SteerConfiguration<>(
+                        steerMotorPort,
+                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                )
+        );
     }
 
     /**
-     * Creates a Mk3 swerve module that uses a NEO for driving and a Falcon 500 for
-     * steering.
+     * Creates a Mk3 swerve module that uses a NEO for driving and a Falcon 500 for steering.
      * Module information is displayed in the specified ShuffleBoard container.
      *
      * @param container        The container to display module information in.
@@ -412,14 +431,13 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        return createNeoFalcon500(container, new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
-                steerEncoderPort, steerOffset);
+            double steerOffset
+    ) {
+        return createNeoFalcon500(container, new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset);
     }
 
     /**
-     * Creates a Mk3 swerve module that uses a NEO for driving and a Falcon 500 for
-     * steering.
+     * Creates a Mk3 swerve module that uses a NEO for driving and a Falcon 500 for steering.
      *
      * @param configuration    Module configuration parameters to use.
      * @param gearRatio        The gearing configuration the module is in.
@@ -435,20 +453,23 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
+            double steerOffset
+    ) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getNeoDriveFactory(configuration),
-                getFalcon500SteerFactory(configuration)).create(
-                        driveMotorPort,
-                        new Falcon500SteerConfiguration<>(
-                                steerMotorPort,
-                                new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)));
+                getFalcon500SteerFactory(configuration)
+        ).create(
+                driveMotorPort,
+                new Falcon500SteerConfiguration<>(
+                        steerMotorPort,
+                        new CanCoderAbsoluteConfiguration(steerEncoderPort, steerOffset)
+                )
+        );
     }
 
     /**
-     * Creates a Mk3 swerve module that uses a NEO for driving and a Falcon 500 for
-     * steering.
+     * Creates a Mk3 swerve module that uses a NEO for driving and a Falcon 500 for steering.
      *
      * @param gearRatio        The gearing configuration the module is in.
      * @param driveMotorPort   The CAN ID of the drive NEO.
@@ -462,9 +483,9 @@ public final class Mk3SwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double steerOffset) {
-        return createNeoFalcon500(new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
-                steerEncoderPort, steerOffset);
+            double steerOffset
+    ) {
+        return createNeoFalcon500(new Mk3ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset);
     }
 
     public enum GearRatio {

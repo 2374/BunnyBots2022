@@ -323,7 +323,7 @@ public class AutonomousChooser {
     }
 
     private Command follow(RobotContainer container, Trajectory trajectory) {
-        return new FollowTrajectoryCommand(container.getDrivetrainSubsystem(), trajectory);
+        return new FollowTrajectoryCommand(container.getDrivetrain(), trajectory);
     }
 
     // private Command followAndIntake(RobotContainer container, Trajectory trajectory) {
@@ -340,7 +340,7 @@ public class AutonomousChooser {
 
     public void resetRobotPose(SequentialCommandGroup command, RobotContainer container, Trajectory trajectory) {
         Path.State start = trajectory.getPath().calculate(0.0);
-        command.addCommands(new InstantCommand(() -> container.getDrivetrainSubsystem().setPose(new Pose2d(start.getPosition().x,
+        command.addCommands(new InstantCommand(() -> container.getDrivetrain().setPose(new Pose2d(start.getPosition().x,
                 start.getPosition().y, new Rotation2d(start.getRotation().toRadians())))));
     }
 
