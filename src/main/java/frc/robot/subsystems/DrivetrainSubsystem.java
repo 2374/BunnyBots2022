@@ -85,6 +85,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private double motorOutputLimiter;
 
     public DrivetrainSubsystem() {
+        getGyroscopeRotation().getRadians();
         // Mk4ModuleConfiguration mk4ModuleConfiguration = new Mk4ModuleConfiguration();
         // mk4ModuleConfiguration.setDriveCurrentLimit(DRIVETRAIN_CURRENT_LIMIT);
         Mk3ModuleConfiguration mk3ModuleConfiguration = new Mk3ModuleConfiguration();

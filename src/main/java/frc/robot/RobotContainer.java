@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.*;
+import frc.robot.commands.buttonCommands.CloseClawCommand;
 import frc.robot.commands.buttonCommands.LowerArmCommand;
+import frc.robot.commands.buttonCommands.OpenClawCommand;
 import frc.robot.commands.buttonCommands.RaiseArmCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.AutonomousChooser;
@@ -13,6 +15,7 @@ import frc.robot.util.AutonomousTrajectories;
 public class RobotContainer {
     private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
     private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+    private final ClawSubsystem m_clawSubsystem = new ClawSubsystem();
 
     private final AutonomousChooser autonomousChooser = new AutonomousChooser(
             new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS));
@@ -36,6 +39,8 @@ public class RobotContainer {
         new Button(m_controller::getBackButton).whenPressed(m_drivetrainSubsystem::zeroRotation);
         new Button(m_controller::getAButton).whileHeld(new LowerArmCommand(m_armSubsystem));
         new Button(m_controller::getYButton).whileHeld(new RaiseArmCommand(m_armSubsystem));
+        new Button(m_controller::getXButton).whileHeld(new OpenClawCommand(m_clawSubsystem));
+        new Button(m_controller::getBButton).whileHeld(new CloseClawCommand(m_clawSubsystem));
     }
 
     private static double deadband(double value, double tolerance) {

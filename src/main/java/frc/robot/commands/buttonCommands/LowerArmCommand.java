@@ -18,11 +18,11 @@ public class LowerArmCommand extends CommandBase {
 
     public void execute() {
         if (m_armSubsystem.getArmPosition() <= Constants.ARM_LIMIT) {
-            cancel();
+            end(false);
         }
     }
 
-    public void end() {
+    public void end(boolean interupted) {
         m_armSubsystem.stopArm();
     }
 }

@@ -3,7 +3,7 @@ package frc.robot.commands.buttonCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class RaiseArmCommand extends CommandBase{
+public class RaiseArmCommand extends CommandBase {
     private final ArmSubsystem m_armSubsystem;
 
     public RaiseArmCommand(ArmSubsystem armSubsystem) {
@@ -17,11 +17,11 @@ public class RaiseArmCommand extends CommandBase{
 
     public void execute() {
         if (m_armSubsystem.getArmPosition() <= 0) {
-            end();
+            end(false);
         }
     }
 
-    public void end() {
+    public void end(boolean interupted) {
         m_armSubsystem.stopArm();
     }
 }
