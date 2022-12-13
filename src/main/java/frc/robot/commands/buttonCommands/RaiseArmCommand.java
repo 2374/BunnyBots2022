@@ -15,12 +15,6 @@ public class RaiseArmCommand extends CommandBase {
         m_armSubsystem.raiseArm();
     }
 
-    public void execute() {
-        if (m_armSubsystem.getArmPosition() <= 0) {
-            end(false);
-        }
-    }
-
     public void end(boolean interupted) {
         m_armSubsystem.stopArm();
     }
