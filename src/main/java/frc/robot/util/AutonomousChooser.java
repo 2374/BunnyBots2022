@@ -21,6 +21,7 @@ public class AutonomousChooser {
 
         autonomousModeChooser.setDefaultOption("1 meter F", AutonomousMode.ONE_METER_F);
         autonomousModeChooser.addOption("1 meter B", AutonomousMode.ONE_METER_B);
+        autonomousModeChooser.addOption("Figure Eight", AutonomousMode.FIGURE_EIGHT);
     }
 
     public SendableChooser<AutonomousMode> getModeChooser() {
@@ -43,6 +44,17 @@ public class AutonomousChooser {
         resetRobotPose(command, container, trajectories.getOneMeterB());
 
         command.addCommands(follow(container, trajectories.getOneMeterB()));
+
+        return command;
+    }
+
+    public Command getFigureEightAuto(RobotContainer container) {
+        SequentialCommandGroup command = new SequentialCommandGroup();
+
+        resetRobotPose(command, container, trajectories.getFigureEight());
+
+        command.addCommands(follow(container, trajectories.getFigureEight()));
+        command.addCommands(follow(container, null));
 
         return command;
     }
@@ -90,11 +102,13 @@ public class AutonomousChooser {
                 return getOneMeterFAuto(container);
             case ONE_METER_B:
                 return getOneMeterBAuto(container);
+            case FIGURE_EIGHT:
+                return getFigureEightAuto(container);
         }
         return new InstantCommand();
     }
 
     private enum AutonomousMode {
-        ONE_METER_F, ONE_METER_B
+        ONE_METER_F, ONE_METER_B, FIGURE_EIGHT
     }
 }
