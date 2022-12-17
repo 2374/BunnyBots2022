@@ -1,7 +1,6 @@
 package frc.robot.util;
 
 import edu.wpi.first.math.util.Units;
-import frc.common.control.Path;
 import frc.common.control.SimplePathBuilder;
 import frc.common.control.Trajectory;
 import frc.common.control.TrajectoryConstraint;

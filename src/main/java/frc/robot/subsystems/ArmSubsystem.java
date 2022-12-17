@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -11,6 +12,10 @@ public class ArmSubsystem extends SubsystemBase {
     private boolean brakeMode = true;
 
     private ArmSubsystem instance;
+
+    private SlewRateLimiter rate = new SlewRateLimiter(2);
+
+    private double target = 0;
 
     public ArmSubsystem() {
         armMotor = new WPI_TalonFX(Constants.ARM_MOTOR_PORT, Constants.CANIVORE_CAN_BUS_NAME);
@@ -30,15 +35,15 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void raiseArm() {
-        armMotor.set(-1);
+        target = -1;
     }
 
     public void lowerArm() {
-        armMotor.set(1);
+        target = 1;
     }
 
     public void stopArm() {
-        armMotor.stopMotor();
+        target = 0;
     }
 
     public void toggleBrakeMode() {
@@ -46,6 +51,10 @@ public class ArmSubsystem extends SubsystemBase {
             armMotor.setNeutralMode(NeutralMode.Coast);
         else
             armMotor.setNeutralMode(NeutralMode.Brake);
+    }
+
+    public void periodic() {
+        armMotor.set(rate.calculate(target));
     }
 
 }

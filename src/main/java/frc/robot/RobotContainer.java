@@ -37,8 +37,10 @@ public class RobotContainer {
 
     public void configureButtonBindings() {
         new Button(m_controller::getBackButton).whenPressed(m_drivetrainSubsystem::zeroRotation);
+        // Arm
         new Button(m_controller::getAButton).whileHeld(new LowerArmCommand(m_armSubsystem));
         new Button(m_controller::getYButton).whileHeld(new RaiseArmCommand(m_armSubsystem));
+        // Claw
         new Button(m_controller::getXButton).whileHeld(new OpenClawCommand(m_clawSubsystem));
         new Button(m_controller::getBButton).whileHeld(new CloseClawCommand(m_clawSubsystem));
     }

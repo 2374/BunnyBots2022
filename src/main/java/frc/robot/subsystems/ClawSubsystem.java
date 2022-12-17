@@ -24,11 +24,11 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public void openClaw() {
-        clawMotor.set(.1);
+        clawMotor.set(1);
     }
 
     public void closeClaw() {
-        clawMotor.set(-.1);
+        clawMotor.set(-1);
     }
 
     public void stopClaw() {

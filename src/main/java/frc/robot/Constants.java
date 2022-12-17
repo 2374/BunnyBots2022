@@ -9,15 +9,7 @@ public class Constants {
 
     public static final int CONTROLLER_PORT = 0;
 
-    public static final int INTAKE_LEFT_MOTOR_PORT = 0;// 12;
-    public static final int INTAKE_RIGHT_MOTOR_PORT = 0;// 13;
-    public static final int INTAKE_SOLENOID_PORT = 0;
-    public static final int CLIMBER_FIRST_LEFT_MOTOR_PORT = 0; // 16;
-    public static final int CLIMBER_FIRST_RIGHT_MOTOR_PORT = 0; // 11;
-    public static final int CLIMBER_SECOND_LEFT_MOTOR_PORT = 0; // 17;
-    public static final int CLIMBER_SECOND_RIGHT_MOTOR_PORT = 0; // 18;
-    public static final int FEEDER_MOTOR_PORT = 0; // 10;
-    public static final int ARM_MOTOR_PORT = 0;
+    public static final int ARM_MOTOR_PORT = 8;
 
     public static final int FEEDER_SENSOR_FULL_PORT = 0; // 1;
     public static final int FEEDER_SENSOR_ENTRY_PORT = 0;
