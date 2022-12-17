@@ -57,11 +57,13 @@ public class RobotContainer {
     }
 
     private double getForwardInput() {
-        return -square(deadband(m_controller.getLeftY(), 0.1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        return -square(deadband(m_controller.getLeftY(), 0.1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND
+                * DrivetrainSubsystem.SPEED_MULTIPLIER;
     }
 
     private double getStrafeInput() {
-        return -square(deadband(m_controller.getLeftX(), 0.1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+        return -square(deadband(m_controller.getLeftX(), 0.1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND
+                * DrivetrainSubsystem.SPEED_MULTIPLIER;
     }
 
     private double getRotationInput() {
