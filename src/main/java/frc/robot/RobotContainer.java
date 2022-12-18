@@ -14,8 +14,8 @@ import frc.robot.util.AutonomousTrajectories;
 
 public class RobotContainer {
     private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-    private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
-    private final ClawSubsystem m_clawSubsystem = new ClawSubsystem();
+    // private final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+    // private final ClawSubsystem m_clawSubsystem = new ClawSubsystem();
 
     private final AutonomousChooser autonomousChooser = new AutonomousChooser(
             new AutonomousTrajectories(DrivetrainSubsystem.TRAJECTORY_CONSTRAINTS));
@@ -24,6 +24,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         CommandScheduler.getInstance().registerSubsystem(m_drivetrainSubsystem);
+        // CommandScheduler.getInstance().registerSubsystem(m_armSubsystem);
         m_drivetrainSubsystem.setDefaultCommand(
                 new DefaultDriveCommand(m_drivetrainSubsystem, this::getForwardInput, this::getStrafeInput,
                         this::getRotationInput));
@@ -38,11 +39,15 @@ public class RobotContainer {
     public void configureButtonBindings() {
         new Button(m_controller::getBackButton).whenPressed(m_drivetrainSubsystem::zeroRotation);
         // Arm
-        new Button(m_controller::getAButton).whileHeld(new LowerArmCommand(m_armSubsystem));
-        new Button(m_controller::getYButton).whileHeld(new RaiseArmCommand(m_armSubsystem));
-        // Claw
-        new Button(m_controller::getXButton).whileHeld(new OpenClawCommand(m_clawSubsystem));
-        new Button(m_controller::getBButton).whileHeld(new CloseClawCommand(m_clawSubsystem));
+        // new Button(m_controller::getAButton).whileHeld(new
+        // LowerArmCommand(m_armSubsystem));
+        // new Button(m_controller::getYButton).whileHeld(new
+        // RaiseArmCommand(m_armSubsystem));
+        // // Claw
+        // new Button(m_controller::getXButton).whileHeld(new
+        // OpenClawCommand(m_clawSubsystem));
+        // new Button(m_controller::getBButton).whileHeld(new
+        // CloseClawCommand(m_clawSubsystem));
     }
 
     private static double deadband(double value, double tolerance) {
@@ -68,7 +73,7 @@ public class RobotContainer {
 
     private double getRotationInput() {
         return -square(deadband(m_controller.getRightX(), 0.1))
-                * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
+                * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * DrivetrainSubsystem.SPEED_MULTIPLIER;
     }
 
     public AutonomousChooser getAutonomousChooser() {
@@ -79,7 +84,7 @@ public class RobotContainer {
         return m_drivetrainSubsystem;
     }
 
-    public ArmSubsystem getArmSubsystem() {
-        return m_armSubsystem;
-    }
+    // public ArmSubsystem getArmSubsystem() {
+    // return m_armSubsystem;
+    // }
 }
